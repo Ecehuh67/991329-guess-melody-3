@@ -21,3 +21,5 @@ App.propTypes = {
 };
 
 export default App;
+
+// added smth -)
