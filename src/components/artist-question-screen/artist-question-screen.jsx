@@ -1,40 +1,37 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {GameType} from "../../consts.js";
-import AudioPlayer from '../audio-player/audio-player.jsx';
 
 const ArtistQuestionScreen = (props) => {
-  const {onAnswer, question} = props;
+  const {onAnswer, question, renderPlayer} = props;
   const {answers, song} = question;
-  return (
-      <section className="game__screen">
-        <h2 className="game__title">Кто исполняет эту песню?</h2>
-        <div className="game__track">
-          <div className="track">
-            <AudioPlayer
-              isPlaying={true}
-              src={song.src}
-            />
-          </div>
-        </div>
 
-        <form className="game__artist">
-         {answers.map((answer, i) => (
-           <div key={answer.artist} className="artist">
-             <input className="artist__input visually-hidden" type="radio" name="answer" value={`answer-${i}`} id={`answer-${i}`}
-               onChange={(evt) => {
-                 evt.preventDefault();
-                 onAnswer(question, answer);
-               }}
-             />
-             <label className="artist__name" htmlFor={`answer-${i}`}>
-               <img className="artist__picture" src={answer.picture} alt={answer.artist} />
-               {answer.artist}
-             </label>
-           </div>
-         ))}
-       </form>
-      </section>
+  return (
+    <section className="game__screen">
+      <h2 className="game__title">Кто исполняет эту песню?</h2>
+      <div className="game__track">
+        <div className="track">
+          {renderPlayer(song.src, 0)}
+        </div>
+      </div>
+
+      <form className="game__artist">
+        {answers.map((answer, i) => (
+          <div key={answer.artist} className="artist">
+            <input className="artist__input visually-hidden" type="radio" name="answer" value={`answer-${i}`} id={`answer-${i}`}
+              onChange={(evt) => {
+                evt.preventDefault();
+                onAnswer(question, answer);
+              }}
+            />
+            <label className="artist__name" htmlFor={`answer-${i}`}>
+              <img className="artist__picture" src={answer.picture} alt={answer.artist} />
+              {answer.artist}
+            </label>
+          </div>
+        ))}
+      </form>
+    </section>
   );
 };
 
@@ -51,6 +48,7 @@ ArtistQuestionScreen.propTypes = {
     }).isRequired,
     type: PropTypes.oneOf([GameType.ARTIST, GameType.GENRE]).isRequired,
   }).isRequired,
+  renderPlayer: PropTypes.func.isRequired
 };
 
 export default ArtistQuestionScreen;
